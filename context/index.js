@@ -19,6 +19,6 @@ export const Provider = ({ children }) => {
   const notifySuccess = (message) => toast.success(message, { duration: 4000 });
 
   return (
-    <Context.Provider value={{}}>{children}</Context.Provider>
+    <Context.Provider value={{Dapp_Name}}>{children}</Context.Provider>
   );
 };
