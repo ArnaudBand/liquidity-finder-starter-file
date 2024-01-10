@@ -31,12 +31,26 @@ export const Provider = ( { children } ) => {
         FACTORY_ABI,
         PROVIDER
       );
+
+      const poolAddress = await factoryContract.functions.getPool(
+        liquidity.tokenA,
+        liquidity.tokenB,
+        Number(liquidity.fee)
+      );
+
+      const poolHistory = {
+        token_A: liquidity.token_A,
+        token_B: liquidity.token_B,
+        fee: liquidity.fee,
+        network: selectedNetwork.name,
+        pool_address: poolAddress,
+      }
       
     } catch (error) {
       
     }
   };
-  
+
   return (
     <Context.Provider value={ { Dapp_Name } }>{ children }</Context.Provider>
   );
