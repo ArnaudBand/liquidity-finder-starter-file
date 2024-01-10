@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 // internal imports
 import { FACTORY_ABI, FACTORY_ADDRESS } from "./constants";
 import { } from "../utils/shortaddress";
+import Loader from '../components/Loader';
 
 export const Context = React.createContext();
 
@@ -88,8 +89,45 @@ export const Provider = ( { children } ) => {
     }
   }
 
+  // GET POOL DETAILS
+  const GET_POOL_DETAILS = async (poolAddress, selectednetwork) => {
+    try {
+      setLoading( true );
+
+      const PROVIDER = new ethers.providers.JsonRpcProvider(
+        selectednetwork.rpcUrl
+      );
+
+      const poolContract = new Contract(
+        poolAddress,
+        UniswapV3Pool.abi,
+        PROVIDER
+      );
+
+      const poolData = await getPoolData(poolContract, selectednetwork, poolAddress);
+
+      let liquidityArray = [];
+      const poolLists = localStorage.getItem( "liquidityArray" );
+      if ( poolLists ) {
+        liquidityArray = JSON.parse( poolLists );
+        liquidityArray.push( poolData );
+        localStorage.setItem( "liquidityArray", JSON.stringify( liquidityArray ) );
+      } else {
+        liquidityArray.push( poolData );
+        localStorage.setItem( "liquidityArray", JSON.stringify( liquidityArray ) );
+      }
+
+      setLoading( false );
+      notifySuccess( "Pool Address Generated Successfully" );
+
+    } catch (error) {
+      setLoading( false );
+      notifyError( "error" );
+    }
+  }
+
   return (
-    <Context.Provider value={ { Dapp_Name, GET_POOL_ADDRESS } }>
+    <Context.Provider value={ { Dapp_Name, loading, GET_POOL_ADDRESS, GET_POOL_DETAILS } }>
       { children }
     </Context.Provider>
   );
