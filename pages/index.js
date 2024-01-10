@@ -33,6 +33,22 @@ const index = () => {
         setActiveComponent={setActiveComponent}
         activeNetwork={activeNetwork}
       />
+      {activeComponent === "Home" ? (
+        <Home
+          setActiveComponent={setActiveComponent}
+          GET_POOL_DETAILS={GET_POOL_DETAILS}
+        />
+      ) : activeComponent === "Home" ? (
+        <GetPool GET_POOL_ADDRESS={GET_POOL_ADDRESS} />
+      ) : activeComponent === "Home" ? (
+        <PoolHistory setActiveComponent={setActiveComponent} />
+      ) : activeComponent === "Home" ? (
+        <LiqudityHistory setActiveComponent={setActiveComponent} />
+      ) : activeComponent === "Home" ? (
+        <Networks setActiveComponent={setActiveComponent} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
