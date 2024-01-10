@@ -69,6 +69,25 @@ export const Provider = ( { children } ) => {
     }
   };
 
+  // GET POOL DETAILS
+  const getPoolData = async ( poolContract, selectedNetwork, poolAddress ) => {
+    const [liquidity, fee, token0, token1] = await Promise.all([
+      poolContract.liquidity(),
+      poolContract.fee(),
+      poolContract.token0(),
+      poolContract.token1(),
+    ])
+
+    return {
+      liquidity: liquidity.toString(),
+      fee: fee,
+      token0: token0,
+      token1: token1,
+      poolAddress: poolAddress,
+      network: selectedNetwork.name,
+    }
+  }
+
   return (
     <Context.Provider value={ { Dapp_Name, GET_POOL_ADDRESS } }>
       { children }
