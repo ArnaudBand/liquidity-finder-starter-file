@@ -22,6 +22,7 @@ export const Provider = ( { children } ) => {
   const GET_POOL_ADDRESS = async ( liquidity, selectedNetwork ) => {
 
     try {
+      setLoading( true );
       // PROVIDER
       const PROVIDER = new ethers.providers.JsonRpcProvider(
         selectedNetwork.rpcUrl
@@ -35,7 +36,7 @@ export const Provider = ( { children } ) => {
       const poolAddress = await factoryContract.functions.getPool(
         liquidity.tokenA,
         liquidity.tokenB,
-        Number(liquidity.fee)
+        Number( liquidity.fee )
       );
 
       const poolHistory = {
@@ -45,13 +46,32 @@ export const Provider = ( { children } ) => {
         network: selectedNetwork.name,
         pool_address: poolAddress,
       }
-      
-    } catch (error) {
-      
+
+      let poolArray = [];
+      const poolLists = localStorage.getItem( "poolArray" );
+      if ( poolLists ) {
+        poolArray = JSON.parse( poolLists );
+        poolArray.push( poolHistory );
+        localStorage.setItem( "poolArray", JSON.stringify( poolArray ) );
+      } else {
+        poolArray.push( poolHistory );
+        localStorage.setItem( "poolArray", JSON.stringify( poolArray ) );
+      }
+
+      setLoading( false );
+      notifySuccess( "Pool Address Generated Successfully" );
+
+      return poolAddress;
+
+    } catch ( error ) {
+      setLoading( false );
+      notifyError( "error" );
     }
   };
 
   return (
-    <Context.Provider value={ { Dapp_Name } }>{ children }</Context.Provider>
+    <Context.Provider value={ { Dapp_Name, GET_POOL_ADDRESS } }>
+      { children }
+    </Context.Provider>
   );
 };
