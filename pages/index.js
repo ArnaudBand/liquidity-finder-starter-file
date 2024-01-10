@@ -12,14 +12,16 @@ import {
   Loader,
   IconOne,
   IconTwo,
-} from "@/components/index";
-import { Context } from "@/context/index";
+} from "../components/index";
+import { Context } from "../context/index";
 
 const index = () => {
   const { Dapp_Name } = useContext(Context);
   return (
-    <div>index</div>
+    <div>
+      {Dapp_Name}
+    </div>
   )
 }
 
-export default index
+export default index;
