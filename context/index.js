@@ -6,8 +6,10 @@ import toast from "react-hot-toast";
 
 // internal imports
 import { FACTORY_ABI, FACTORY_ADDRESS } from "./constants";
-import { } from "../utils/shortaddress";
-import Loader from '../components/Loader';
+import { 
+  shortenAddress,
+  parseErrorMessage
+ } from "../utils/shortaddress";
 
 export const Context = React.createContext();
 
@@ -65,8 +67,9 @@ export const Provider = ( { children } ) => {
       return poolAddress;
 
     } catch ( error ) {
+      const errorMsg = parseErrorMessage(error);
       setLoading( false );
-      notifyError( "error" );
+      notifyError( errorMsg );
     }
   };
 
@@ -121,8 +124,9 @@ export const Provider = ( { children } ) => {
       notifySuccess( "Pool Address Generated Successfully" );
 
     } catch (error) {
+      const errorMsg = parseErrorMessage(error);
       setLoading( false );
-      notifyError( "error" );
+      notifyError(errorMsg);
     }
   }
 
